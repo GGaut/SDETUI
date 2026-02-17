@@ -1,6 +1,12 @@
 import random
 
+import allure
 
+
+@allure.feature("Главная страница")
+@allure.story("Визуальное отображение главной страницы")
+@allure.title("Проверка корректности главной страницы и данных в футере и хедере")
+@allure.severity(allure.severity_level.NORMAL)
 def test_mainpage(app):
     mainpage = app.main_page
     mainpage.go_to_main_page()
@@ -20,12 +26,20 @@ def test_mainpage(app):
         assert contact in current_footer_contacts, f"'{contact}' not in the footer"
 
 
+@allure.feature("Главная страница")
+@allure.story("Навигационное меню")
+@allure.title("Проверка видимости липкого меню навигации")
+@allure.severity(allure.severity_level.MINOR)
 def test_sticky_menu(app):
     mainpage = app.main_page
     mainpage.go_to_main_page()
     assert mainpage.is_element_in_viewport()
 
 
+@allure.feature("Навигация")
+@allure.story("Пожизненное членство")
+@allure.title("Переход на страницу LIFETIME MEMBERSHIP CLUB")
+@allure.severity(allure.severity_level.NORMAL)
 def test_navigate_to_lifetime_membership(app):
     mainpage = app.main_page
     mainpage.go_to_main_page()
@@ -45,6 +59,10 @@ def test_navigate_to_lifetime_membership(app):
     )
 
 
+@allure.feature("Авторизация")
+@allure.story("Авторизация клиента")
+@allure.title("Проверка полей и возможности авторизации клиента")
+@allure.severity(allure.severity_level.CRITICAL)
 def test_login_page(app):
     loginpage = app.login_page
     loginpage.go_to_login_page()
@@ -60,6 +78,10 @@ def test_login_page(app):
     assert exp_sucs_msg in sucs_msg, f"Expected {exp_sucs_msg}, but got {sucs_msg}"
 
 
+@allure.feature("Банковские операции")
+@allure.story("Управление счетом и транзакции")
+@allure.title("Комплексная проверка банковского функционала")
+@allure.severity(allure.severity_level.CRITICAL)
 def test_banking_page(app):
     bankingpage = app.banking_page
 
