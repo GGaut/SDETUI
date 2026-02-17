@@ -1,3 +1,4 @@
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
@@ -34,7 +35,7 @@ class BasePage:
         try:
             self.find(locator)
             return True
-        except Exception:
+        except (TimeoutException, NoSuchElementException):
             return False
 
     def handle_alert(self):

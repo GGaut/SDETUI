@@ -141,13 +141,9 @@ class BankingPage(BasePage):
 
     def clear_transaction_list(self):
         self.click(BPL.TRANS_TAB).click(BPL.RESET_BTN)
-        try:
-            self.find(BPL.TRANS_ROWS)
-            return False
-        except Exception:
-            return True
-        finally:
-            self.click(BPL.BACK_FROM_TRANS_TAB)
+        result = self.is_element_present(BPL.TRANS_ROWS)
+        self.click(BPL.BACK_FROM_TRANS_TAB)
+        return result
 
     def find_customer(self, firstname, lastname):
         self.click(BPL.BTN_SHOW_CUST_MENU)
@@ -155,10 +151,7 @@ class BankingPage(BasePage):
             By.XPATH,
             f"//table//tbody/tr[td[contains(normalize-space(),'{firstname}')] and td[contains(normalize-space(),'{lastname}')]]",
         )
-        try:
-            return self.find(locator)
-        except Exception:
-            return False
+        return self.is_element_present(locator)
 
     def delete_customer(self, name):
         self.click(BPL.BTN_SHOW_CUST_MENU).type(BPL.CUST_SEARCH_FIELD, name).click(

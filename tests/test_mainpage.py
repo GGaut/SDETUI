@@ -162,7 +162,7 @@ def test_banking_page(app):
         "Unexpected withdraw success message state"
     )
     assert bankingpage.get_balance() == 0, "Balance is not 0"
-    assert bankingpage.clear_transaction_list(), "Transaction is not cleared"
+    assert not bankingpage.clear_transaction_list(), "Transaction is not cleared"
 
     # Delete Customer
 
