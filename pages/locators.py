@@ -34,10 +34,13 @@ class MainPageLocators:
     )
 
     # Slider
+    CAROUSEL_CONT = (By.CSS_SELECTOR, "[data-id='50827c4']")
     SLIDER_NEXT = (
         By.CSS_SELECTOR,
         ".pp-slider-arrow.elementor-swiper-button-next.swiper-button-next-c50f9f0",
     )
+    CAROUSEL_ORIG = (By.CSS_SELECTOR, "img[id='NjczOjE0Mw==-1']")
+    CAROUSEL_NEXT = (By.CSS_SELECTOR, "id='NzAxOjEzMw==-1']")
 
     # Change page locators
     MENU_ALL_COURSES = (By.XPATH, "//span[text()='All Courses']")

@@ -11,8 +11,13 @@ class MainPage(BasePage):
         self.open(self.URL)
         return self
 
-    def test_slider(self):
-        """doesnt work"""
+    def check_slider(self):
+        """Слайдер не работает ни в одном браузере, это просто заглушка с предположением как должна србабатываь логика."""
+        slider_content = self.find(MPL.CAROUSEL_CONT)
+        next = slider_content.find_element(*MPL.CAROUSEL_NEXT)
+        self.click(MPL.SLIDER_NEXT)
+        orig = slider_content.find_element(*MPL.CAROUSEL_ORIG)
+        return orig == next
 
     def navigate_to_lifetime(self):
         try:
