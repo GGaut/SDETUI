@@ -9,40 +9,40 @@ class MainPage(BasePage):
     URL = "https://www.way2automation.com"
 
     @allure.step("Перейти на главную страницу")
-    def go_to_main_page(self):
+    def go_to_main_page(self) -> "MainPage":
         self.open(self.URL)
         return self
 
-    def check_slider(self):
+    def check_slider(self) -> bool:
         """Слайдер не работает ни в одном браузере, это просто заглушка с предположением как должна срабатываь логика."""
         slider_content = self.find(MPL.CAROUSEL_CONT)
         next = slider_content.find_element(*MPL.CAROUSEL_NEXT)
-        self.click(MPL.SLIDER_NEXT)
+        self.find_n_click(MPL.SLIDER_NEXT)
         orig = slider_content.find_element(*MPL.CAROUSEL_ORIG)
         return orig == next
 
     @allure.step("Перейти на страницу lifetime membership")
-    def navigate_to_lifetime(self):
+    def navigate_to_lifetime(self) -> "MainPage":
         try:
             ActionChains(self.driver).move_to_element(
                 self.find(MPL.MENU_ALL_COURSES)
             ).perform()
-            self.click(MPL.MENU_LIFETIME)
+            self.find_n_click(MPL.MENU_LIFETIME)
             return self
         except Exception as e:
             print(f"Error navigating to lifetime membership: {e}")
             raise
 
     @allure.step("Получить url текущей страницы")
-    def get_current_url(self):
+    def get_current_url(self) -> str:
         return self.driver.current_url
 
     @allure.step("Получить заголовок lifetime membership")
-    def get_changed_page_title(self):
+    def get_changed_page_title(self) -> str:
         return self.get_text(MPL.PAGE_TITLE)
 
     @allure.step("Проверить присутсвие необходимых элементов в хедере")
-    def is_header_correct(self):
+    def is_header_correct(self) -> bool:
         header_element = self.find(MPL.HEADER_CONTACTS)
 
         phone_present = len(header_element.find_elements(*MPL.PHONE)) > 0
@@ -67,7 +67,7 @@ class MainPage(BasePage):
         return cleaned
 
     @allure.step("Проверить присутсвие основных элементов на главной странице")
-    def is_layout_correct(self):
+    def is_layout_correct(self) -> bool:
         return (
             self.is_element_present(MPL.HEADER_CONTACTS)
             and self.is_element_present(MPL.NAV_BLOCK)
@@ -77,7 +77,7 @@ class MainPage(BasePage):
         )
 
     @allure.step("Проверить видимость элемента")
-    def is_element_in_viewport(self):
+    def is_element_in_viewport(self) -> bool:
         nav_menu = self.find(MPL.NAV_BLOCK)
         ActionChains(self.driver).move_to_element(self.find(MPL.FOOTER)).perform()
         rect = self.driver.execute_script(

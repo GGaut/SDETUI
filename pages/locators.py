@@ -30,7 +30,7 @@ class MainPageLocators:
     EMAIL = (By.XPATH, "//a[contains(@href, '@')]")
     MEDIA = (
         By.CSS_SELECTOR,
-        ".ast-header-social-wrap, .ast-header-social-1-wrap, .social-icons, .social-media",
+        "[data-section='section-hb-social-icons-1']",
     )
 
     # Slider

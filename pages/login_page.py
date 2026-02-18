@@ -8,14 +8,16 @@ class LoginPage(BasePage):
     URL = "https://www.way2automation.com/angularjs-protractor/registeration/#/login"
 
     @allure.step("Открыть страницу авторизации")
-    def go_to_login_page(self):
+    def go_to_login_page(self) -> "LoginPage":
         self.open(self.URL)
         return self
 
     @allure.step("Авторизоваться")
-    def login(self, user, pwd):
+    def login(self, user: str, pwd: str) -> "LoginPage":
         (
-            self.type(LP.USERNAME, user)
+            self.clear_field(LP.USERNAME)
+            .type(LP.USERNAME, user)
+            .clear_field(LP.PASSWORD)
             .type(LP.PASSWORD, pwd)
             .type(LP.USERNAME_DESCRIPTION, "Description")
             .find(LP.LOGIN_BTN)
@@ -24,12 +26,12 @@ class LoginPage(BasePage):
         return self
 
     @allure.step("Деавторизоваться")
-    def logout(self):
-        self.click(LP.LOGOUT_BTN)
+    def logout(self) -> "LoginPage":
+        self.find_n_click(LP.LOGOUT_BTN)
         return self
 
     @allure.step("Проверить наличие элементов логин/пароль/описание")
-    def are_login_fields_present(self):
+    def are_login_fields_present(self) -> bool:
         return (
             self.is_element_present(LP.USERNAME)
             and self.is_element_present(LP.PASSWORD)
@@ -37,14 +39,14 @@ class LoginPage(BasePage):
         )
 
     @allure.step("Проверить состояние кнопки Login")
-    def is_login_enabled(self):
+    def is_login_enabled(self) -> bool:
         btn = self.find(LP.LOGIN_BTN)
         return btn.is_enabled()
 
     @allure.step("Получить текст сообщения об успехе авторизации")
-    def is_login_success_message(self):
+    def is_login_success_message(self) -> str:
         return self.get_text(LP.STATUS_MSG)
 
     @allure.step("Получить текст сообщения об ошибке авторизации")
-    def is_login_error_message(self):
+    def is_login_error_message(self) -> str:
         return self.get_text(LP.ERROR_LOGIN_MSG)
