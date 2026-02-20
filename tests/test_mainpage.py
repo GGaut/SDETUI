@@ -9,8 +9,8 @@ import allure
 @allure.severity(allure.severity_level.NORMAL)
 def test_mainpage(main_page):
     main_page.go_to_main_page()
-    assert main_page.is_layout_correct()
 
+    assert main_page.is_layout_correct()
     assert main_page.is_header_correct()
 
     current_footer_contacts = main_page.get_footer_contacts()

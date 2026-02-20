@@ -1,4 +1,5 @@
 import allure
+from config.config import MainPageConf
 from selenium.webdriver.common.action_chains import ActionChains
 
 from .base_page import BasePage
@@ -6,11 +7,9 @@ from .locators import MainPageLocators as MPL
 
 
 class MainPage(BasePage):
-    URL = "https://www.way2automation.com"
-
     @allure.step("Перейти на главную страницу")
     def go_to_main_page(self) -> "MainPage":
-        self.open(self.URL)
+        self.open(MainPageConf.URL)
         return self
 
     def check_slider(self) -> bool:
@@ -53,7 +52,7 @@ class MainPage(BasePage):
         return phone_present and skype_present and email_present and media_present
 
     @allure.step("Получить контакты из футера")
-    def get_footer_contacts(self):
+    def get_footer_contacts(self) -> list[str]:
         ActionChains(self.driver).move_to_element(self.find(MPL.FOOTER)).perform()
 
         elements = self.find_all(MPL.FOOTER_CONTACTS)

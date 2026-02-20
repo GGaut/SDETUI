@@ -2,6 +2,7 @@ import time
 from typing import Union
 
 import allure
+from config.config import BankingPageConf
 from selenium.webdriver.common.by import By
 
 from .base_page import BasePage
@@ -9,11 +10,9 @@ from .locators import BankingPageLocators as BPL
 
 
 class BankingPage(BasePage):
-    URL = "https://www.way2automation.com/angularjs-protractor/banking/#/login"
-
     @allure.step("Открыть страницу меню банка")
     def go_to_banking_page(self) -> "BankingPage":
-        self.open(self.URL)
+        self.open(BankingPageConf.URL)
         return self
 
     # Sample form methods
@@ -41,12 +40,12 @@ class BankingPage(BasePage):
     ) -> "BankingPage":
         self.calculate_longest_hobby_and_click()
         (
-            self.type(BPL.SMP_FIRST_NAME, firstname)
-            .type(BPL.SMP_LAST_NAME, lastname)
-            .type(BPL.SMP_EMAIL, email)
-            .type(BPL.SMP_PASSWORD, password)
+            self.enter_text(BPL.SMP_FIRST_NAME, firstname)
+            .enter_text(BPL.SMP_LAST_NAME, lastname)
+            .enter_text(BPL.SMP_EMAIL, email)
+            .enter_text(BPL.SMP_PASSWORD, password)
             .select_element(BPL.GENDER, "Other")
-            .type(
+            .enter_text(
                 BPL.TEXTAREA,
                 f"Самое длинное слово из предложенных хобби - {self._longest_hobby}",
             )
@@ -75,9 +74,9 @@ class BankingPage(BasePage):
     ) -> "BankingPage":
         (
             self.find_n_click(BPL.BTN_ADD_CUST_MENU)
-            .type(BPL.ADD_CUST_FORM_FIRST_N, firstname)
-            .type(BPL.ADD_CUST_FORM_LAST_N, lastname)
-            .type(BPL.ADD_CUST_FORM_PC, postcode)
+            .enter_text(BPL.ADD_CUST_FORM_FIRST_N, firstname)
+            .enter_text(BPL.ADD_CUST_FORM_LAST_N, lastname)
+            .enter_text(BPL.ADD_CUST_FORM_PC, postcode)
             .find_n_click(BPL.ADD_CUST_FORM_BTN)
         )
         return self
@@ -114,15 +113,16 @@ class BankingPage(BasePage):
 
     @allure.step("Совершить транзакцию")
     def customer_deposit_withdraw(self, amount: int, action: str) -> "BankingPage":
+        """Из-за того, что на странице используются одни и те же элементы для разных действий, без time.sleep возникает race condition. Так и не придумал как можно силами selenium это сделать, wait не имеет смысла, так как элемент уже и так на странице он просто обновляется"""
         if action == "deposit":
             self.find_n_click(BPL.DEPOSIT_TAB)
             time.sleep(1)
-            self.type(BPL.AMOUNT_INP, amount)
+            self.enter_text(BPL.AMOUNT_INP, str(amount))
             self.find_n_click(BPL.SUBMIT_BTN)
         elif action == "withdraw":
             self.find_n_click(BPL.WITHDRAW_TAB)
             time.sleep(1)
-            self.type(BPL.AMOUNT_INP, amount)
+            self.enter_text(BPL.AMOUNT_INP, str(amount))
             self.find_n_click(BPL.SUBMIT_BTN)
         time.sleep(1)
         return self
@@ -135,8 +135,8 @@ class BankingPage(BasePage):
         except Exception:
             return False
 
-    @allure.step("Проверить присутсвие транзакции в таблице")
-    def is_transaction_present(self, amount) -> bool:
+    @allure.step("Проверить присутствие транзакции в таблице")
+    def is_transaction_present(self, amount: int) -> bool:
         locator = (By.XPATH, f"//td[normalize-space()='{amount}']")
         is_trans_present = self.find_n_click(BPL.TRANS_TAB).is_element_present(locator)
         self.find_n_click(BPL.BACK_FROM_TRANS_TAB)
@@ -180,7 +180,7 @@ class BankingPage(BasePage):
 
     @allure.step("Удалить пользователя")
     def delete_customer(self, name: str) -> "BankingPage":
-        self.find_n_click(BPL.BTN_SHOW_CUST_MENU).type(
+        self.find_n_click(BPL.BTN_SHOW_CUST_MENU).enter_text(
             BPL.CUST_SEARCH_FIELD, name
         ).find_n_click(BPL.CUST_DELETE_BTN).clear_field(BPL.CUST_SEARCH_FIELD)
         return self

@@ -126,8 +126,14 @@ class BankingPageLocators:
     AMOUNT_INP = (By.CSS_SELECTOR, "input[placeholder='amount']")
     SUBMIT_BTN = (By.XPATH, "//button[text()='Deposit' or text()='Withdraw']")
 
-    #
     TRANS_ROWS = (By.XPATH, "//table/tbody/tr")
     RESET_BTN = (By.CSS_SELECTOR, "button[ng-click='reset()']")
     BACK_BTN = (By.CSS_SELECTOR, "button[ng-click='back()']")
     SCROLL_R_BTN = (By.CSS_SELECTOR, "button[ng-click='scrollRight()']")
+
+
+class SQLPageLocators:
+    LOGIN = (By.CSS_SELECTOR, "input[name='login']")
+    PASSWORD = (By.CSS_SELECTOR, "input[name='psw']")
+    SUBMIT = (By.CSS_SELECTOR, "input[name='subm1']")
+    FRANU = (By.XPATH, '//*[contains(text(), "Franu")]')

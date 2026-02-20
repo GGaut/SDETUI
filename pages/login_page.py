@@ -1,25 +1,24 @@
 import allure
+from config.config import LoginPageConf
 
 from .base_page import BasePage
 from .locators import LoginPageLocators as LP
 
 
 class LoginPage(BasePage):
-    URL = "https://www.way2automation.com/angularjs-protractor/registeration/#/login"
-
     @allure.step("Открыть страницу авторизации")
     def go_to_login_page(self) -> "LoginPage":
-        self.open(self.URL)
+        self.open(LoginPageConf.URL)
         return self
 
     @allure.step("Авторизоваться")
     def login(self, user: str, pwd: str) -> "LoginPage":
         (
             self.clear_field(LP.USERNAME)
-            .type(LP.USERNAME, user)
+            .enter_text(LP.USERNAME, user)
             .clear_field(LP.PASSWORD)
-            .type(LP.PASSWORD, pwd)
-            .type(LP.USERNAME_DESCRIPTION, "Description")
+            .enter_text(LP.PASSWORD, pwd)
+            .enter_text(LP.USERNAME_DESCRIPTION, "Description")
             .find(LP.LOGIN_BTN)
             .click()
         )

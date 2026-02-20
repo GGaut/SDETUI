@@ -1,6 +1,8 @@
+import allure
 import pytest
 from factory.page_factory import PageFactory
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -8,7 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture(scope="function")
 def driver():
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
+    # options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
     driver = webdriver.Chrome(
         service=Service(ChromeDriverManager().install()), options=options
@@ -30,6 +32,11 @@ def login_page(driver):
 @pytest.fixture(scope="function")
 def banking_page(driver):
     return PageFactory(driver).banking_page
+
+
+@pytest.fixture(scope="function")
+def sql_page(driver):
+    return PageFactory(driver).sql_page
 
 
 @pytest.fixture(scope="function")
@@ -63,3 +70,24 @@ def banking_page_with_deposit(banking_page_prepared):
     deposit_amount = 100321
     banking_page.customer_deposit_withdraw(deposit_amount, "deposit")
     return banking_page
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == "call" and report.failed:
+        driver_fixture = item.funcargs.get("driver")
+
+        if driver_fixture:
+            try:
+                screenshot = driver_fixture.get_screenshot_as_png()
+
+                allure.attach(
+                    screenshot,
+                    name=f"screenshot_{item.name}",
+                    attachment_type=allure.attachment_type.PNG,
+                )
+            except WebDriverException as e:
+                print(f"Не удалось сделать скриншот: {e}")
