@@ -136,4 +136,3 @@ class SQLPageLocators:
     LOGIN = (By.CSS_SELECTOR, "input[name='login']")
     PASSWORD = (By.CSS_SELECTOR, "input[name='psw']")
     SUBMIT = (By.CSS_SELECTOR, "input[name='subm1']")
-    FRANU = (By.XPATH, '//*[contains(text(), "Franu")]')

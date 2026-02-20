@@ -8,6 +8,7 @@ dotenv.load_dotenv()
 class SQLConf:
     URL = os.environ["BASE_SQL_URL"]
     LOGIN = os.environ["SQL_LOGIN"]
+    NAME = os.environ["NAME"]
     PASSWORD = os.environ["SQL_PASSWORD"]
     DEST_FILE = os.environ["SQL_COOKIE_FILE"]
 

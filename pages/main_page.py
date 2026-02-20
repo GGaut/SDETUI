@@ -14,7 +14,7 @@ class MainPage(BasePage):
 
     def check_slider(self) -> bool:
         """Слайдер не работает ни в одном браузере, это просто заглушка с предположением как должна срабатываь логика."""
-        slider_content = self.find(MPL.CAROUSEL_CONT)
+        slider_content = self.find_el(MPL.CAROUSEL_CONT)
         next = slider_content.find_element(*MPL.CAROUSEL_NEXT)
         self.find_n_click(MPL.SLIDER_NEXT)
         orig = slider_content.find_element(*MPL.CAROUSEL_ORIG)
@@ -24,7 +24,7 @@ class MainPage(BasePage):
     def navigate_to_lifetime(self) -> "MainPage":
         try:
             ActionChains(self.driver).move_to_element(
-                self.find(MPL.MENU_ALL_COURSES)
+                self.find_el(MPL.MENU_ALL_COURSES)
             ).perform()
             self.find_n_click(MPL.MENU_LIFETIME)
             return self
@@ -42,7 +42,7 @@ class MainPage(BasePage):
 
     @allure.step("Проверить присутсвие необходимых элементов в хедере")
     def is_header_correct(self) -> bool:
-        header_element = self.find(MPL.HEADER_CONTACTS)
+        header_element = self.find_el(MPL.HEADER_CONTACTS)
 
         phone_present = len(header_element.find_elements(*MPL.PHONE)) > 0
         skype_present = len(header_element.find_elements(*MPL.SKYPE)) > 0
@@ -53,9 +53,9 @@ class MainPage(BasePage):
 
     @allure.step("Получить контакты из футера")
     def get_footer_contacts(self) -> list[str]:
-        ActionChains(self.driver).move_to_element(self.find(MPL.FOOTER)).perform()
+        ActionChains(self.driver).move_to_element(self.find_el(MPL.FOOTER)).perform()
 
-        elements = self.find_all(MPL.FOOTER_CONTACTS)
+        elements = self.find_all_el(MPL.FOOTER_CONTACTS)
         raw_texts = [el.text.strip() for el in elements]
 
         cleaned = []
@@ -77,8 +77,8 @@ class MainPage(BasePage):
 
     @allure.step("Проверить видимость элемента")
     def is_element_in_viewport(self) -> bool:
-        nav_menu = self.find(MPL.NAV_BLOCK)
-        ActionChains(self.driver).move_to_element(self.find(MPL.FOOTER)).perform()
+        nav_menu = self.find_el(MPL.NAV_BLOCK)
+        ActionChains(self.driver).move_to_element(self.find_el(MPL.FOOTER)).perform()
         rect = self.driver.execute_script(
             "return arguments[0].getBoundingClientRect();", nav_menu
         )

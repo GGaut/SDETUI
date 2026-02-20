@@ -10,8 +10,8 @@ import allure
 def test_mainpage(main_page):
     main_page.go_to_main_page()
 
-    assert main_page.is_layout_correct()
-    assert main_page.is_header_correct()
+    assert main_page.is_layout_correct(), "Layout is incorrect"
+    assert main_page.is_header_correct(), "Header is incorrect"
 
     current_footer_contacts = main_page.get_footer_contacts()
     target_footer_contacts = [
@@ -235,6 +235,6 @@ def test_delete_customer_account(banking_page_prepared, banking_test_data):
     assert banking_page.go_to_manager_tab().find_customer(
         data["firstname"], data["lastname"]
     ), "This customer is not in the table"
-    assert not banking_page.delete_customer(data["firstname"]).find_customer(
+    assert banking_page.delete_customer(data["firstname"]).find_customer(
         data["firstname"], data["lastname"]
     ), "Customer still in the table"

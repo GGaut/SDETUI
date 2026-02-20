@@ -19,7 +19,7 @@ class LoginPage(BasePage):
             .clear_field(LP.PASSWORD)
             .enter_text(LP.PASSWORD, pwd)
             .enter_text(LP.USERNAME_DESCRIPTION, "Description")
-            .find(LP.LOGIN_BTN)
+            .find_el(LP.LOGIN_BTN)
             .click()
         )
         return self
@@ -39,7 +39,7 @@ class LoginPage(BasePage):
 
     @allure.step("Проверить состояние кнопки Login")
     def is_login_enabled(self) -> bool:
-        btn = self.find(LP.LOGIN_BTN)
+        btn = self.find_el(LP.LOGIN_BTN)
         return btn.is_enabled()
 
     @allure.step("Получить текст сообщения об успехе авторизации")

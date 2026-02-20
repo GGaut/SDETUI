@@ -9,6 +9,7 @@ wheels/
 .github
 allure_results/
 .env
+cookies.json
 
 
 
