@@ -113,7 +113,7 @@ class BankingPage(BasePage):
 
     @allure.step("Совершить транзакцию")
     def customer_deposit_withdraw(self, amount: int, action: str) -> "BankingPage":
-        """Из-за того, что на странице используются одни и те же элементы для разных действий, без time.sleep возникает race condition. Так и не придумал как можно силами selenium это сделать, wait не имеет смысла, так как элемент уже и так на странице он просто обновляется"""
+        # time.sleep ждет обновление переиспользуемых элементов поля ввода и сообщения
         if action == "deposit":
             self.find_n_click(BPL.DEPOSIT_TAB)
             time.sleep(1)

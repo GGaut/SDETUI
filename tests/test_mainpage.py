@@ -235,6 +235,6 @@ def test_delete_customer_account(banking_page_prepared, banking_test_data):
     assert banking_page.go_to_manager_tab().find_customer(
         data["firstname"], data["lastname"]
     ), "This customer is not in the table"
-    assert banking_page.delete_customer(data["firstname"]).find_customer(
+    assert not banking_page.delete_customer(data["firstname"]).find_customer(
         data["firstname"], data["lastname"]
     ), "Customer still in the table"

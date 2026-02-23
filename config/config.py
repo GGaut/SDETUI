@@ -5,6 +5,10 @@ import dotenv
 dotenv.load_dotenv()
 
 
+class Grid:
+    URL = os.environ["GRID_URL"]
+
+
 class SQLConf:
     URL = os.environ["BASE_SQL_URL"]
     LOGIN = os.environ["SQL_LOGIN"]

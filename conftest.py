@@ -1,5 +1,6 @@
 import allure
 import pytest
+from config.config import Grid
 from factory.page_factory import PageFactory
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -10,11 +11,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 @pytest.fixture(scope="function")
 def driver():
     options = webdriver.ChromeOptions()
-    # options.add_argument("--headless=new")
+    options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
-    )
+
+    grid_url = Grid.URL
+    try:
+        driver = webdriver.Remote(command_executor=grid_url, options=options)
+    except Exception:
+        driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()), options=options
+        )
+
     yield driver
     driver.quit()
 
