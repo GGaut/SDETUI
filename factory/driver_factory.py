@@ -24,8 +24,14 @@ class DriverFactory:
             options.add_argument("--headless=new")
 
         if self.use_grid:
-            return self._init_remote_driver(options)
-        return self._init_local_driver(options)
+            driver = self._init_remote_driver(options)
+        else:
+            driver = self._init_local_driver(options)
+
+        if driver and self.browser_name == "ie":
+            driver.set_window_size(1920, 1080)
+
+        return driver
 
     def _get_options(self):
         if self.browser_name == "chrome":
@@ -47,6 +53,8 @@ class DriverFactory:
         elif self.browser_name == "ie":
             options = IeOptions()
             options.ignore_zoom_level = True
+            options.ignore_protected_mode_settings = True
+            options.require_window_focus = True
             # Любой адрес в интернете, чтобы обойти protected mode
             options.initial_browser_url = "https://example.com"
             return options
