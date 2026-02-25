@@ -1,29 +1,33 @@
 import allure
 import pytest
-from config.config import Grid
+from factory.driver_factory import DriverFactory
 from factory.page_factory import PageFactory
-from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser",
+        action="store",
+        default="chrome",
+        help="Browser (chrome, firefox, edge, ie)",
+    )
+    parser.addoption("--local", action="store_true", help="Local run")
 
 
 @pytest.fixture(scope="function")
-def driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless=new")
-    options.add_argument("--window-size=1920,1080")
+def driver(request):
+    browser = request.config.getoption("--browser")
+    is_local = request.config.getoption("--local")
 
-    grid_url = Grid.URL
-    try:
-        driver = webdriver.Remote(command_executor=grid_url, options=options)
-    except Exception:
-        driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), options=options
-        )
+    factory = DriverFactory(browser_name=browser, use_grid=not is_local)
+    driver_instance = factory.get_driver()
 
-    yield driver
-    driver.quit()
+    if driver_instance is None:
+        pytest.fail
+    yield driver_instance
+    if driver_instance:
+        driver_instance.quit()
 
 
 @pytest.fixture(scope="function")
