@@ -53,7 +53,8 @@ class MainPage(BasePage):
 
     @allure.step("Получить контакты из футера")
     def get_footer_contacts(self) -> list[str]:
-        ActionChains(self.driver).move_to_element(self.find_el(MPL.FOOTER)).perform()
+        footer = self.find_el(MPL.FOOTER)
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", footer)
 
         elements = self.find_all_el(MPL.FOOTER_CONTACTS)
         raw_texts = [el.text.strip() for el in elements]
@@ -77,8 +78,13 @@ class MainPage(BasePage):
 
     @allure.step("Проверить видимость элемента")
     def is_element_in_viewport(self) -> bool:
+        footer = self.find_el(MPL.FOOTER)
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'center'});", footer
+        )
+        ActionChains(self.driver).move_to_element(footer).perform()
         nav_menu = self.find_el(MPL.NAV_BLOCK)
-        ActionChains(self.driver).move_to_element(self.find_el(MPL.FOOTER)).perform()
+
         rect = self.driver.execute_script(
             "return arguments[0].getBoundingClientRect();", nav_menu
         )

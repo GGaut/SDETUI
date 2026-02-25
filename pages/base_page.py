@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 class BasePage:
     def __init__(self, driver: WebDriver) -> None:
         self.driver: WebDriver = driver
-        self.wait: WebDriverWait = WebDriverWait(driver, 3)
+        self.wait: WebDriverWait = WebDriverWait(driver, 5)
 
     def open(self, url: str) -> "BasePage":
         self.driver.get(url)
