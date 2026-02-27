@@ -46,6 +46,12 @@ class BasePage:
         alert.accept()
         return alert_text
 
+    def input_alert(self, text: str) -> "BasePage":
+        alert = self.wait.until(EC.alert_is_present())
+        alert.send_keys(text)
+        alert.accept()
+        return self
+
     def select_element(self, locator: tuple[str, str], text: str) -> "BasePage":
         element = self.find_el(locator)
         Select(element).select_by_visible_text(text)
@@ -55,3 +61,21 @@ class BasePage:
         element = self.find_el(locator)
         element.clear()
         return self
+
+    def switch_to_frame(self, locator: tuple[str, str]):
+        self.driver.switch_to.default_content()
+        iframe = self.wait.until(EC.presence_of_element_located(locator))
+        self.driver.switch_to.frame(iframe)
+        return self
+
+    def switch_to_window(self, window_index: int):
+        current_handle = self.driver.current_window_handle
+        self.wait.until(lambda d: len(d.window_handles) > window_index)
+        for handle in self.driver.window_handles:
+            if handle != current_handle:
+                self.driver.switch_to.window(handle)
+                break
+        return self
+
+    def get_tabs_count(self) -> int:
+        return len(self.driver.window_handles)

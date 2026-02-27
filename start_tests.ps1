@@ -24,7 +24,6 @@
 param(
     [Parameter(Position=0)]
     [int]$tc = 3,
-    [Parameter(position=1)]
     [string]$browser = "chrome",
     [switch]$rrf,
     [switch]$local
@@ -45,7 +44,6 @@ if ($browser -eq "ie") {
 
 $pytestArgs = @(
     "-n", "$tc",
-    "--dist=loadfile",
     "--browser=$browser"
 )
 

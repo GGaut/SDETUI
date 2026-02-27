@@ -11,8 +11,6 @@ from .locators import SQLPageLocators as SPL
 
 
 class SQLPage(BasePage):
-    # Задание 5
-
     @allure.step("Перейти на главную страницу")
     def go_to_sql_main_page(self) -> "SQLPage":
         self.open(SQLConf.URL)
@@ -54,8 +52,6 @@ class SQLPage(BasePage):
         return self.is_element_present(
             (By.XPATH, f"//*[contains(text(), {SQLConf.NAME})]")
         )
-
-    # Задание 6
 
     @allure.step("Найти и сфокусироваться на элементе Логина")
     def find_and_focus_login(self) -> "WebElement":

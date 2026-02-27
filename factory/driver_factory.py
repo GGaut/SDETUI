@@ -11,17 +11,21 @@ from selenium.webdriver.remote.webdriver import WebDriver as RemoteWebDriver
 
 
 class DriverFactory:
-    def __init__(self, browser_name: str, use_grid: bool = False):
+    def __init__(
+        self, browser_name: str, use_grid: bool = False, enable_bidi: bool = False
+    ):
         self.browser_name = browser_name.lower()
         self.use_grid = use_grid
         if use_grid:
             self.grid_url = Grid.URL
+        self.enable_bidi = enable_bidi
 
     def get_driver(self):
         options = self._get_options()
 
         if self.browser_name in ("chrome", "firefox", "edge"):
             options.add_argument("--headless=new")
+            options.enable_bidi = self.enable_bidi
 
         if self.use_grid:
             driver = self._init_remote_driver(options)
