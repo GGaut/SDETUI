@@ -1,11 +1,11 @@
-from pages.alert_page import AlertPage
-from pages.auth_page import AuthPage
-from pages.banking_page import BankingPage
-from pages.dragndrop_page import DNDPage
-from pages.login_page import LoginPage
-from pages.main_page import MainPage
-from pages.sql_page import SQLPage
-from pages.tabs_page import TabsPage
+from SDETUI.pages.alert_page import AlertPage
+from SDETUI.pages.auth_page import AuthPage
+from SDETUI.pages.banking_page import BankingPage
+from SDETUI.pages.dragndrop_page import DNDPage
+from SDETUI.pages.login_page import LoginPage
+from SDETUI.pages.main_page import MainPage
+from SDETUI.pages.sql_page import SQLPage
+from SDETUI.pages.tabs_page import TabsPage
 
 
 class PageFactory:

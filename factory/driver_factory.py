@@ -1,4 +1,3 @@
-from config.config import Grid
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.webdriver import WebDriver as ChromeWebDriver
 from selenium.webdriver.edge.options import Options as EdgeOptions
@@ -9,11 +8,20 @@ from selenium.webdriver.ie.options import Options as IeOptions
 from selenium.webdriver.ie.webdriver import WebDriver as IEWebDriver
 from selenium.webdriver.remote.webdriver import WebDriver as RemoteWebDriver
 
+from SDETUI.config.config import Grid
+
 
 class DriverFactory:
     def __init__(
         self, browser_name: str, use_grid: bool = False, enable_bidi: bool = False
     ):
+        """Инициализируем обёртку WebDriver.
+        Параметры:
+            browser_name: название браузера.
+            use_grid: если True, тесты запускаются через Selenium Grid.
+            enable_bidi:  если True, включается Bi‑directional (BiDi) протокол,
+                    который используется для работы с заголовками HTTP(Требуется Selenium 4+).
+        """
         self.browser_name = browser_name.lower()
         self.use_grid = use_grid
         if use_grid:

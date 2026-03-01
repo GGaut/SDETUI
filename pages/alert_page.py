@@ -1,13 +1,13 @@
 import allure
-from config.config import JqueryPagesConf as JPC
 
-from .base_page import BasePage
-from .locators import JqueryPagesLocators as JPL
+from SDETUI.config.config import JqueryPagesConf as JPC
+from SDETUI.pages.base_page import BasePage
+from SDETUI.pages.locators import JqueryPagesLocators as JPL
 
 
 class AlertPage(BasePage):
     @allure.step("Открыть страницу с алертом")
-    def got_to_alert_page(self) -> "AlertPage":
+    def go_to_alert_page(self) -> "AlertPage":
         self.open(JPC.ALERT_URL)
         return self
 

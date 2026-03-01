@@ -2,12 +2,12 @@ import json
 import os
 
 import allure
-from config.config import SQLConf
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 
-from .base_page import BasePage
-from .locators import SQLPageLocators as SPL
+from SDETUI.config.config import SQLConf
+from SDETUI.pages.base_page import BasePage
+from SDETUI.pages.locators import SQLPageLocators as SPL
 
 
 class SQLPage(BasePage):
@@ -55,7 +55,7 @@ class SQLPage(BasePage):
 
     @allure.step("Найти и сфокусироваться на элементе Логина")
     def find_and_focus_login(self) -> "WebElement":
-        search_input = self.find_el(SPL.LOGIN)
+        search_input = self.wait_n_find_element(SPL.LOGIN)
         search_input.click()
         return search_input
 

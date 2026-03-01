@@ -14,10 +14,10 @@ class BasePage:
         self.driver.get(url)
         return self
 
-    def find_el(self, locator: tuple[str, str]) -> WebElement:
+    def wait_n_find_element(self, locator: tuple[str, str]) -> WebElement:
         return self.wait.until(EC.visibility_of_element_located(locator))
 
-    def find_all_el(self, locator: tuple[str, str]) -> list[WebElement]:
+    def wait_n_find_all_elements(self, locator: tuple[str, str]) -> list[WebElement]:
         return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     def find_n_click(self, locator: tuple[str, str]) -> "BasePage":
@@ -25,17 +25,17 @@ class BasePage:
         return self
 
     def enter_text(self, locator: tuple[str, str], text: str) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         element.clear()
         element.send_keys(text)
         return self
 
     def get_text(self, locator: tuple[str, str]) -> str:
-        return self.find_el(locator).text
+        return self.wait_n_find_element(locator).text
 
     def is_element_present(self, locator: tuple[str, str]) -> bool:
         try:
-            self.find_el(locator)
+            self.wait_n_find_element(locator)
             return True
         except (TimeoutException, NoSuchElementException):
             return False
@@ -53,12 +53,12 @@ class BasePage:
         return self
 
     def select_element(self, locator: tuple[str, str], text: str) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         Select(element).select_by_visible_text(text)
         return self
 
     def clear_field(self, locator: tuple[str, str]) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         element.clear()
         return self
 

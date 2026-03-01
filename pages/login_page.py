@@ -1,8 +1,8 @@
 import allure
-from config.config import LoginPageConf
 
-from .base_page import BasePage
-from .locators import LoginPageLocators as LP
+from SDETUI.config.config import LoginPageConf
+from SDETUI.pages.base_page import BasePage
+from SDETUI.pages.locators import LoginPageLocators as LP
 
 
 class LoginPage(BasePage):
@@ -19,7 +19,7 @@ class LoginPage(BasePage):
             .clear_field(LP.PASSWORD)
             .enter_text(LP.PASSWORD, pwd)
             .enter_text(LP.USERNAME_DESCRIPTION, "Description")
-            .find_el(LP.LOGIN_BTN)
+            .wait_n_find_element(LP.LOGIN_BTN)
             .click()
         )
         return self
@@ -39,7 +39,7 @@ class LoginPage(BasePage):
 
     @allure.step("Проверить состояние кнопки Login")
     def is_login_enabled(self) -> bool:
-        btn = self.find_el(LP.LOGIN_BTN)
+        btn = self.wait_n_find_element(LP.LOGIN_BTN)
         return btn.is_enabled()
 
     @allure.step("Получить текст сообщения об успехе авторизации")

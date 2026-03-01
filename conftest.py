@@ -1,8 +1,9 @@
 import allure
 import pytest
-from factory.driver_factory import DriverFactory
-from factory.page_factory import PageFactory
 from selenium.common.exceptions import WebDriverException
+
+from SDETUI.factory.driver_factory import DriverFactory
+from SDETUI.factory.page_factory import PageFactory
 
 
 def pytest_addoption(parser):
@@ -27,10 +28,9 @@ def driver(request):
     driver_instance = factory.get_driver()
 
     if driver_instance is None:
-        pytest.fail
+        pytest.fail("Couldn`t create WebDriver")
     yield driver_instance
-    if driver_instance:
-        driver_instance.quit()
+    driver_instance.quit()
 
 
 @pytest.fixture(scope="function")

@@ -1,17 +1,24 @@
-import allure
-from config.config import JqueryPagesConf
+from enum import IntEnum
 
-from .base_page import BasePage
-from .locators import JqueryPagesLocators as JPL
+import allure
+
+from SDETUI.config.config import JqueryPagesConf
+from SDETUI.pages.base_page import BasePage
+from SDETUI.pages.locators import JqueryPagesLocators as JPL
+
+
+class TabsNumber(IntEnum):
+    FIRST = 0
+    SECOND = 1
 
 
 class TabsPage(BasePage):
     @allure.step("Открыть страницу Tabs")
-    def got_to_tabs_page(self) -> "TabsPage":
+    def go_to_tabs_page(self) -> "TabsPage":
         self.open(JqueryPagesConf.TABS_URL)
         return self
 
-    @allure.step("Нажать на ссылку во фрейме")
+    @allure.step("Нажать на ссылку во фрейме и открыть новую вкладку")
     def click_new_tab_link(self):
         self.switch_to_frame(JPL.TABS_BTN_FRAME)
         self.find_n_click(JPL.TAB_LINK)
@@ -20,6 +27,6 @@ class TabsPage(BasePage):
 
     @allure.step("Нажать на ссылку на новой вкладке")
     def click_link_on_second_tab(self):
-        self.switch_to_window(1)
+        self.switch_to_window(TabsNumber.SECOND)
         self.find_n_click(JPL.TAB_LINK)
         return self
