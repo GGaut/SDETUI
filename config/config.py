@@ -27,3 +27,10 @@ class MainPageConf:
 
 class BankingPageConf:
     URL = os.environ["BANKINGPAGE_URL"]
+
+
+class JqueryPagesConf:
+    DROP_URL = os.environ["DROPPABLE_URL"]
+    TABS_URL = os.environ["TABS_URL"]
+    ALERT_URL = os.environ["ALERT_URL"]
+    AUTH_URL = os.environ["AUTH_URL"]

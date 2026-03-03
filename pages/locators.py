@@ -136,3 +136,21 @@ class SQLPageLocators:
     LOGIN = (By.CSS_SELECTOR, "input[name='login']")
     PASSWORD = (By.CSS_SELECTOR, "input[name='psw']")
     SUBMIT = (By.CSS_SELECTOR, "input[name='subm1']")
+
+
+class JqueryPagesLocators:
+    DRAGGABLE = (By.ID, "draggable")
+    DROPPABLE = (By.ID, "droppable")
+    DROP_TEXT = (By.XPATH, "//div[@id='droppable']/p")
+    DND_IFRAME = (By.CSS_SELECTOR, "iframe[src='droppable/default.html']")
+
+    TABS_BTN_FRAME = (By.CSS_SELECTOR, "#example-1-tab-1 iframe")
+    TAB_LINK = (By.PARTIAL_LINK_TEXT, "New Browser Tab")
+
+    INPUT_ALERT_BTN = (By.CSS_SELECTOR, "a[href='#example-1-tab-2']")
+    ALRT_IFRAME = (By.CSS_SELECTOR, "iframe[src='alert/input-alert.html']")
+    ALRT_BTN = (By.CSS_SELECTOR, "button[onclick='myFunction()']")
+    ALRT_AFTERMESSAGE = (By.ID, "demo")
+
+    DISPLAY_IMAGE_BUTTON = (By.ID, "displayImage")
+    AUTHENTICATED_IMAGE = (By.CSS_SELECTOR, "img[src*='authenticatedimage']")

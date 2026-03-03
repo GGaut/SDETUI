@@ -1,0 +1,63 @@
+import allure
+import pytest
+from faker import Faker
+
+fake = Faker("ru_RU")
+
+
+@allure.feature("Функции страниц")
+@allure.story("Drag and drop")
+@allure.title("Проверка функции drag and drop")
+@allure.severity(allure.severity_level.NORMAL)
+def test_drag_n_drop(dnd_page):
+    current_text = dnd_page.go_to_dnd_page().check_drop_text()
+    new_text = dnd_page.drag_n_drop().check_drop_text()
+    assert new_text != current_text, "The text has not changed"
+    assert new_text == "Dropped!", (
+        f"Expected changed text 'Dropped!', but got {new_text}"
+    )
+
+
+@allure.feature("Функции страниц")
+@allure.story("Вкладки")
+@allure.title("Проверка открытия трех вкладок")
+@allure.severity(allure.severity_level.NORMAL)
+def test_three_tabs(tabs_page):
+    tabs_page.go_to_tabs_page().click_new_tab_link().click_link_on_second_tab()
+
+    tabs_count = tabs_page.get_tabs_count()
+
+    assert tabs_count == 3, f"Expected 3 tabs, but got {tabs_count}"
+
+
+@allure.feature("Функции страниц")
+@allure.story("Alert")
+@allure.title("Проверка функций alert")
+@allure.severity(allure.severity_level.NORMAL)
+def test_alert(alert_page):
+    text = fake.name()
+    with allure.step("Ввести текст в алерт и проверить появившееся сообщение"):
+        message = (
+            alert_page.go_to_alert_page()
+            .click_alert_btn()
+            .fill_alert_txt(text)
+            .check_message()
+        )
+    assert text in message, (
+        f"Expected text '{text}' is not in the final message:'{message}'."
+    )
+
+
+@allure.feature("Функции страниц")
+@allure.story("Basic Authentication")
+@allure.title("Проверка функций Basic Authentication")
+@allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.parametrize("driver", [True], indirect=True)
+def test_basic_auth(auth_page):
+    login = "httpwatch"
+    pswd = "httpwatch"
+    assert (
+        auth_page.go_to_auth_page()
+        .setup_auth_data_n_click_display(login, pswd)
+        .is_image_displayed()
+    ), "Authentication failed"
