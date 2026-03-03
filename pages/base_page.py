@@ -14,10 +14,10 @@ class BasePage:
         self.driver.get(url)
         return self
 
-    def find_el(self, locator: tuple[str, str]) -> WebElement:
+    def wait_n_find_element(self, locator: tuple[str, str]) -> WebElement:
         return self.wait.until(EC.visibility_of_element_located(locator))
 
-    def find_all_el(self, locator: tuple[str, str]) -> list[WebElement]:
+    def wait_n_find_all_elements(self, locator: tuple[str, str]) -> list[WebElement]:
         return self.wait.until(EC.presence_of_all_elements_located(locator))
 
     def find_n_click(self, locator: tuple[str, str]) -> "BasePage":
@@ -25,17 +25,17 @@ class BasePage:
         return self
 
     def enter_text(self, locator: tuple[str, str], text: str) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         element.clear()
         element.send_keys(text)
         return self
 
     def get_text(self, locator: tuple[str, str]) -> str:
-        return self.find_el(locator).text
+        return self.wait_n_find_element(locator).text
 
     def is_element_present(self, locator: tuple[str, str]) -> bool:
         try:
-            self.find_el(locator)
+            self.wait_n_find_element(locator)
             return True
         except (TimeoutException, NoSuchElementException):
             return False
@@ -46,12 +46,36 @@ class BasePage:
         alert.accept()
         return alert_text
 
+    def input_alert(self, text: str) -> "BasePage":
+        alert = self.wait.until(EC.alert_is_present())
+        alert.send_keys(text)
+        alert.accept()
+        return self
+
     def select_element(self, locator: tuple[str, str], text: str) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         Select(element).select_by_visible_text(text)
         return self
 
     def clear_field(self, locator: tuple[str, str]) -> "BasePage":
-        element = self.find_el(locator)
+        element = self.wait_n_find_element(locator)
         element.clear()
         return self
+
+    def switch_to_frame(self, locator: tuple[str, str]):
+        self.driver.switch_to.default_content()
+        iframe = self.wait.until(EC.presence_of_element_located(locator))
+        self.driver.switch_to.frame(iframe)
+        return self
+
+    def switch_to_window(self, window_index: int):
+        current_handle = self.driver.current_window_handle
+        self.wait.until(lambda d: len(d.window_handles) > window_index)
+        for handle in self.driver.window_handles:
+            if handle != current_handle:
+                self.driver.switch_to.window(handle)
+                break
+        return self
+
+    def get_tabs_count(self) -> int:
+        return len(self.driver.window_handles)

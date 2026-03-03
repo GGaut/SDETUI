@@ -1,8 +1,9 @@
 import allure
 import pytest
-from factory.driver_factory import DriverFactory
-from factory.page_factory import PageFactory
 from selenium.common.exceptions import WebDriverException
+
+from SDETUI.factory.driver_factory import DriverFactory
+from SDETUI.factory.page_factory import PageFactory
 
 
 def pytest_addoption(parser):
@@ -19,15 +20,17 @@ def pytest_addoption(parser):
 def driver(request):
     browser = request.config.getoption("--browser")
     is_local = request.config.getoption("--local")
+    enable_bidi = getattr(request, "param", False)
 
-    factory = DriverFactory(browser_name=browser, use_grid=not is_local)
+    factory = DriverFactory(
+        browser_name=browser, use_grid=not is_local, enable_bidi=enable_bidi
+    )
     driver_instance = factory.get_driver()
 
     if driver_instance is None:
-        pytest.fail
+        pytest.fail("Couldn`t create WebDriver")
     yield driver_instance
-    if driver_instance:
-        driver_instance.quit()
+    driver_instance.quit()
 
 
 @pytest.fixture(scope="function")
@@ -48,6 +51,26 @@ def banking_page(driver):
 @pytest.fixture(scope="function")
 def sql_page(driver):
     return PageFactory(driver).sql_page
+
+
+@pytest.fixture(scope="function")
+def dnd_page(driver):
+    return PageFactory(driver).dnd_page
+
+
+@pytest.fixture(scope="function")
+def tabs_page(driver):
+    return PageFactory(driver).tabs_page
+
+
+@pytest.fixture(scope="function")
+def alert_page(driver):
+    return PageFactory(driver).alert_page
+
+
+@pytest.fixture(scope="function")
+def auth_page(driver):
+    return PageFactory(driver).auth_page
 
 
 @pytest.fixture(scope="function")

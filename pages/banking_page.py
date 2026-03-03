@@ -2,11 +2,11 @@ import time
 from typing import Union
 
 import allure
-from config.config import BankingPageConf
 from selenium.webdriver.common.by import By
 
-from .base_page import BasePage
-from .locators import BankingPageLocators as BPL
+from SDETUI.config.config import BankingPageConf
+from SDETUI.pages.base_page import BasePage
+from SDETUI.pages.locators import BankingPageLocators as BPL
 
 
 class BankingPage(BasePage):
@@ -24,7 +24,7 @@ class BankingPage(BasePage):
 
     @allure.step("Выбрать хобби и получить самое длинное хобби")
     def calculate_longest_hobby_and_click(self) -> "BankingPage":
-        hobbies = self.find_all_el(BPL.HOBBIES)
+        hobbies = self.wait_n_find_all_elements(BPL.HOBBIES)
         hobby_values = []
         for hobby in hobbies:
             value = hobby.get_attribute("value")
@@ -55,7 +55,7 @@ class BankingPage(BasePage):
 
     @allure.step("Проверить сообщение об успехе заполнения Sample формы")
     def is_sample_success_msg(self) -> str:
-        success_message = self.find_el(BPL.SMP_SUCCESS_MESSAGE)
+        success_message = self.wait_n_find_element(BPL.SMP_SUCCESS_MESSAGE)
         message = ""
         if success_message.value_of_css_property("display") == "block":
             message = success_message.text
@@ -150,7 +150,7 @@ class BankingPage(BasePage):
     @allure.step("Вычислить баланс по данным из таблицы")
     def calculate_balance_from_table(self) -> int:
         self.find_n_click(BPL.TRANS_TAB)
-        rows = self.find_all_el(BPL.TRANS_ROWS)
+        rows = self.wait_n_find_all_elements(BPL.TRANS_ROWS)
         total = 0
         for row in rows:
             amount = int(row.find_element(By.XPATH, "./td[2]").text)
